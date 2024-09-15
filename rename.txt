@@ -1,0 +1,252 @@
+﻿Negotiation Chatbot Using Pre-trained AI Models
+
+
+Project Overview
+
+
+This project is a Negotiation Chatbot that simulates a negotiation process between a customer and a supplier. The chatbot can accept, reject, or propose counteroffers based on user input (such as price offers, discount requests, or bundle deals). Initially, the chatbot used the OpenAI GPT-3 API, but due to high costs, I transitioned to using a local model from Hugging Face's transformers library for free and offline use.
+
+
+The chatbot also optionally includes sentiment analysis to adjust its negotiation outcomes based on the user's tone.
+
+
+Features
+
+
+Negotiation Logic: The chatbot starts with a set base price and can either accept, reject, or propose counteroffers based on the price range.
+
+
+Discount Offers: The chatbot can provide discounts if requested by the user.
+
+
+Bundle Deals: The chatbot can offer discounts if the user is buying a bundle of products.
+
+
+AI Responses: When not discussing prices, the chatbot can generate conversational responses using an AI language model.
+
+
+Sentiment Analysis (Optional): The chatbot can detect sentiment (politeness) in user messages and adjust its behavior accordingly.
+
+
+
+
+Tech Stack
+
+
+Local Transformers Model: Hugging Face’s transformers (e.g., GPT-2 or GPT-3 equivalent).
+
+
+Flask: For creating a simple API.
+
+
+Python: Core programming language used for the project.
+
+
+OpenAI API (Initial Implementation): GPT-3 API was initially used but later replaced by a local model.
+
+
+
+
+
+
+---
+
+
+Setup and Installation
+
+
+1. Clone the Repository
+
+
+Clone the project repository to your local machine:
+
+
+git clone  https://github.com/Supersrimanth007/Negotiation-ChatBot
+
+
+2. Set up a Virtual Environment (Optional but recommended)
+
+
+Set up a virtual environment to avoid conflicts between packages:
+
+
+python -m venv venv
+source venv/bin/activate  # On Windows use venv\Scripts\activate
+
+
+3. Install Dependencies
+
+
+Install the required packages by running:
+
+
+pip install -r requirements.txt
+
+
+The dependencies include:
+
+
+Flask (for creating the API)
+
+
+transformers (for the local Hugging Face model)
+
+
+torch (for running the transformer models)
+
+
+
+
+4. Run the Application
+
+
+Start the Flask server by running the following command:
+
+
+python WithoutAPI.py
+
+
+This will launch the chatbot API locally on your machine (usually on http://127.0.0.1:5000/).
+
+
+
+
+---
+
+
+How the Chatbot Works
+
+
+Price Negotiation Logic
+
+
+The chatbot starts with a base price (default is 100).
+
+
+It listens for a price proposal from the user.
+
+
+Based on the user’s input, it will either:
+
+
+Accept: If the proposed price is within a 10% range of the base price.
+
+
+Reject: If the proposed price is too low.
+
+
+Counteroffer: If the price is either too high or slightly below the base price.
+
+
+
+
+
+
+Discounts and Bundles
+
+
+The chatbot can provide discounts if the user requests one. It randomly selects a discount percentage (between 5% and 15%).
+
+
+For bundle offers, the chatbot provides a random discount between 10% and 20%.
+
+
+
+
+AI-Generated Responses
+
+
+If the user input doesn’t include price-related terms (e.g., "Tell me about the product"), the chatbot responds using the local transformer model to simulate natural conversation.
+
+
+
+
+
+
+---
+
+
+Endpoints
+
+
+/negotiate
+
+
+This is the main endpoint that handles user input and responds based on the negotiation logic.
+
+
+Example Request:
+
+
+curl -X POST http://localhost:5000/negotiate -H "Content-Type: application/json" -d '{"user_price": 85, "user_message": "Can I get a discount?"}'
+
+
+Example Response:
+
+
+{
+  "bot_response": "I can offer you a discount of 10%. The discounted price would be 90. Does this work for you?",
+  "offer_price": 90
+}
+
+
+
+
+---
+
+
+Customizing the Chatbot
+
+
+Modifying the Base Price
+
+
+You can modify the base price and thresholds in the app.py file:
+
+
+BASE_PRICE = 100
+MIN_PRICE_THRESHOLD = 0.1  # Minimum 10% below base price
+MAX_PRICE_THRESHOLD = 0.1  # Maximum 10% above base price
+
+
+Adding More Features
+
+
+Feel free to extend the functionality of the chatbot by adding more negotiation strategies, handling different product categories, or even introducing a UI.
+
+
+
+
+---
+
+
+Transition from API Key to Local Model
+
+
+Initial Approach: OpenAI API
+
+
+The project originally used OpenAI’s GPT-3 API to generate conversational responses. While it worked well, the cost increased quickly with frequent use. Therefore, we switched to a local solution.
+
+
+New Approach: Hugging Face Transformers
+
+
+To reduce costs and run the chatbot locally, we transitioned to Hugging Face’s transformers library. This allows the chatbot to run offline using models like GPT-2 or other language models, making it a more scalable and affordable solution.
+
+
+ Acknowledgments
+
+
+This project was developed with the assistance of ChatGPT for:
+
+
+Documentation: Structuring and writing the project documentation for clarity and ease of understanding.
+
+
+Code Arrangement: Organizing the code, improving readability, and optimizing the structure for better functionality.
+
+
+
+
+Special thanks to OpenAI’s GPT-3.5 for providing the technology that powers the chatbot's conversation model.
